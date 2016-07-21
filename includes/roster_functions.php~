@@ -1,0 +1,309 @@
+<?php
+// Task Functions
+// Lagertha V0.5
+// Copyright Aaron J Prisk
+// Updated April 12, 2016
+
+
+
+
+function rosterPull($terms) {
+	
+	$teacher_id=$_SESSION['user_id'];
+// Pull Users Roster Data
+	$query = "SELECT * FROM roster WHERE teacher_id = " .$teacher_id; 
+	
+
+	// Query the database for the results
+	$results = mysql_query($query);
+	// Get number of Total Rows and set variable
+	$rows = mysql_num_rows($results);
+
+
+	if(!$rows) {
+		echo "<br /><h4>No Rosters Created</h4><br />";
+	} else {
+	
+	// Try Query or Kill Connection
+	$data_p = mysql_query($query) or die(mysql_error());
+	
+	
+
+	// Display Roster Container and Table
+	echo "
+   <div class='row'>
+   <div class='col-md-12'>
+   <table class='table table-striped'>	
+   <h4>My Created Rosters</h4>
+	<thead>
+	<tbody>
+	<th></th>
+	<th>Roster ID</th>
+	<th>Roster Name</th>
+	<th>Teacher ID</th>
+	<th></th>
+	</thead>
+	";
+
+	// Display Each Record
+	while ($row = mysql_fetch_array($data_p)) {
+		
+		
+		// Display the records from the database
+		echo "<tr>
+		<td>
+			<form action='data_roster.php'>
+				<input type='hidden' name='rost_id' value='" . $row['roster_id'] . "'/>
+				<input type='hidden' name='rost_name' value='" . $row['roster_name'] . "'/>
+      		<button type='submit' class='btn btn-default' style='padding: 2px 10px;'>View</button>
+      	 </form>
+      </td>
+		<td>" . $row['roster_id'] . "</td>
+		<td>" . $row['roster_name'] . "</td>
+		<td>" . $row['teacher_id'] . "</td>
+		<td><td><button type='submit' class='btn btn-danger' style='padding: 2px 10px;'>Delete</button></td></td>
+		</tr>
+		";
+	}
+	echo "</tbody>";
+	echo "</table>";
+	echo "</div>";
+	echo "</div>";
+	} 
+
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+function memberPull($roster_id, $roster_name) {
+
+
+// Queries for students within the roster_member table for a given roster_id
+
+	// Member and Student DB Query
+	$mem_query = "SELECT * FROM roster_members WHERE rost_id = " . $roster_id; 	
+	$name_query = "SELECT roster_name FROM roster WHERE roster_id = " . $roster_id; 	
+	
+	echo "<h3>" . $roster_name . "</h3>";
+
+	// Query the database for the member results
+	$mem_results = mysql_query($mem_query);
+	// Get number of Total Rows and set variable
+	$mem_rows = mysql_num_rows($mem_results);
+
+	if(!$mem_rows) {
+		echo "<h2>0 Students in Roster</h2><br />";
+	} else {
+	// Set the number of results to display per page
+	$page_rows = 10;
+
+	// Determine the number for the last page
+	$last = ceil($mem_rows/$page_rows);
+
+	$pagenum = $_REQUEST['pagenum'];
+	if (!(isset($pagenum))) {
+		$pagenum = 1;
+	}
+
+	// The page number cannot be less than 1 or greater then the maximum number of pages
+	// It must also exist, if not then display first page.
+	if ($pagenum < 1) {
+		$pagenum = 1;
+	} elseif ($pagenum > $last) {
+		$pagenum = $last;
+	}
+
+	// Find the maximum amount of pages that exist for the query
+	$max = ' limit ' .($pagenum - 1) * $page_rows .',' .$page_rows; 
+		
+	// Query the database for the results
+	$mem_results = mysql_query($mem_query);
+	// Get number of Total Rows and set variable
+	$mem_rows = mysql_num_rows($mem_results);
+
+	if(!$mem_rows) {
+		echo "<h2>No Students in Roster</h2><br />";
+	} else {
+	
+	// Try Query or Kill Connection
+	$data_mem = mysql_query($mem_query . $max) or die(mysql_error());
+	
+	
+	// Display PSSA Container and Table
+	echo "
+   <div class='row'>
+   <div class='col-md-12'>
+   <table class='table table-striped'>	
+	<thead>
+	<tbody>
+	<th>
+	<th>First Name</th>
+	<th>Last Name</th>
+	<th>Student ID</th>
+	<th></th>
+	</thead>
+	";
+
+	// Display Each Record
+	while ($mem_row = mysql_fetch_array($data_mem)) {
+		
+		// Display the records from the database
+		echo "<tr>    
+		<td>
+		   <form action='data_search.php'>
+     		<input type='hidden' name='stu_id' value='" . $mem_row['student_id'] . "'/> 		
+      	<button type='submit' class='btn btn-xs btn-default'>View</button>
+         </form>
+		</td>
+		<td>" . $mem_row['stu_first'] . "</td>
+		<td>" . $mem_row['stu_last'] . "</td>
+		<td>" . $mem_row['student_id'] . "</td>
+		<td>
+		   <form action='' method='POST'>
+		   <input type='hidden' name='rost_mem_num' value='" . $mem_row['rost_mem_num'] . "'/>
+      	<button type='submit' name='remove' class='btn btn-xs btn-danger'>+ Remove from Roster</button>
+         </form>
+		</td>   
+		</tr>
+		";
+	}
+
+	
+	
+	// PAGINATION IN FOOTER
+	echo "<tfoot><tr><td colspan=8>";
+
+	if ($pagenum == 1) { } else {
+		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=1$getappend&terms=$terms$getorder'> <<-First</a> ";
+		echo " ";
+		$previous = $pagenum-1;
+		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$previous$getappend&terms=$terms$getorder'> <-Previous</a> ";
+	} 
+
+	//just a spacer
+	echo "Viewing Page $pagenum of $last";
+
+	 //This does the same as above, only checking if we are on the last page, and then generating the Next and Last links
+	 if ($pagenum == $last) {
+	 } else {
+		$next = $pagenum+1;
+		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$next$getappend&terms=$terms$getorder'>Next -></a> ";
+		echo " ";
+		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last$getappend&terms=$terms$getorder'>Last ->></a> ";
+	}
+	
+			echo "</td></tr></tfoot>";
+			echo "</tbody>";
+			echo "</table>";
+			echo "</div>";
+			echo "</div>";
+			
+			
+			
+			
+			if(isset($_POST['remove'])){
+	$rost_mem_num = $_POST['rost_mem_num'];
+
+		// Add student to selected roster	
+		$remove_query = "DELETE FROM roster_members WHERE rost_mem_num=" . $rost_mem_num;
+		$add_ros_query = mysql_query($remove_query) or die(mysql_error());	
+				// Check for successful mysql query
+				if(mysql_errno()){
+    				echo "MySQL error ".mysql_errno().": "
+    	     		.mysql_error()."\n<br>When executing <br>\n$add_ros_query\n<br>";
+					}		
+				else {	
+					echo "Success.";
+ 					$page = $_SERVER['REQUEST_URI'];
+					$sec = "1";
+					header("Refresh: $sec; url=$page");
+				}
+			}
+	
+		
+			
+			
+			
+			
+			}
+		} 
+	}
+
+
+
+// Create a quick task from host list
+
+
+function quickTask($host_id, $host_name, $mac_addr) {
+	
+
+$user_id=$_SESSION['user_name'];
+
+echo "<h4>Task for computer with hostname: <strong>" . $host_name . "</strong></h4>";
+echo "<hr>";
+echo "<h3><i class='fa fa-archive' aria-hidden='true'></i> Software Task</h3>
+<form action '' method='POST'>
+   <input type='radio' name='type' value='1'> <i class='fa fa-archive' aria-hidden='true'></i>Install Package &nbsp; &nbsp; &nbsp;
+   <input type='radio' name='type' value='2'> <i class='fa fa-minus-circle' aria-hidden='true'></i>Remove Package<br>
+	<input id='login_input_username' class='form-control login_input' type='text' name='pkg' style='width: 50%;' required />
+	<br />
+	<input type='submit' class='btn btn-lg btn-info' name='create' value='CREATE TASK' />
+</form>
+<hr>
+<h3><i class='fa fa-image' aria-hidden='true'></i> Visual Task</h3>
+<form action '' method='POST'>
+   <p><i class='fa fa-exclamation-circle' aria-hidden='true'></i> Wallpaper must be in wallpaper directory (/var/www/html/walls/), be named wall.jpg and have proper permissions set.</p>
+	<br />
+	<input type='submit' class='btn btn-lg btn-info' name='visual' value='CREATE TASK' />
+</form>
+";
+
+//SOFTWARE TASK	
+	if(isset($_POST['create'])){
+	$pkg = $_POST['pkg'];
+	$type = $_POST['type'];
+	
+	mysql_query("INSERT INTO tasks (taskid, host, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())") or die(mysql_error());
+		if(mysql_errno()){
+		echo "Shit.. something broke.";	
+		}
+		else {
+		echo "<h4>Task Creation was Successful!</h4>";
+		}
+} 
+
+// WALLPAPER TASK
+	if(isset($_POST['visual'])){
+	$pkg = $_POST['pkg'];
+	$type = 3;
+	
+	mysql_query("INSERT INTO tasks (taskid, host, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$type', '1', '', '0', 'quick task', '$user_id', '', now())") or die(mysql_error());
+		if(mysql_errno()){
+		echo "Shit.. something broke.";	
+		}
+		else {
+		echo "<h4>Task Creation was Successful!</h4>";
+		}
+} 
+
+
+
+
+
+
+
+
+} // end of quickTask Function
+
+
+
+?>
