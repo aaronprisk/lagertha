@@ -35,8 +35,6 @@ $ sudo mysql_secure_installation
 ```
 Create Lagertha directory and clone Lagertha Repo to local file
 ```
-$ mkdir lagertha
-$ cd lagertha
 $ git clone https://github.com/aaronprisk/lagertha.git
 ```
 Run Lagertha install script
