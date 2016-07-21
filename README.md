@@ -33,7 +33,7 @@ Run the MySQL Secure Installation and set your MySQL root Password
 ```
 $ sudo mysql_secure_installation
 ```
-Create Lagertha directory lone Lagertha Repo to local file
+Create Lagertha directory and clone Lagertha Repo to local file
 ```
 $ mkdir lagertha
 $ cd lagertha
