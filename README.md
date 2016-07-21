@@ -3,6 +3,9 @@
 
 **Lagertha** is an easy-to-use tool for the basic management of Linux devices. 
 
+![Alt text](https://github.com/aaronprisk/lagertha/blob/master/images/lagertha-dash.png "Lagertha Dashboard")
+
+![Alt text](https://github.com/aaronprisk/lagertha/blob/master/images/lagertha-hosts.png "Lagertha Dashboard")
 
 Lagertha consists of two components:
 
