@@ -1,11 +1,15 @@
 <?php
+$link = mysqli_connect("localhost", "lagertha", "sword", "lagertha");
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'USER');
-define('DB_PASS', 'PASSWORD');
-define('DB_NAME', 'lagertha');
+if (!$link) {
+    echo "Error: Unable to connect to Lagertha Database. Check to see that your database is running." . PHP_EOL;
+    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+    exit;
+}
 
-$connection = mysql_connect(DB_HOST, DB_USER, DB_PASS) or die(mysql_error());
-mysql_select_db(DB_NAME) or die(mysql_error());
+echo "Success: Connection to Lagertha was successful." . PHP_EOL;
+echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
 
+mysqli_close($link);
 ?>
