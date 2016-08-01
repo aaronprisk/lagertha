@@ -12,7 +12,7 @@ if ($login->isUserLoggedIn() == true) {
     // for demonstration purposes, we simply show the "you are logged in" view.
     include("header/header.php");
     include("includes/connect.php");
-    include("includes/test_functions.php");
+    include("includes/lagertha_functions.php");
 } else {
     // the user is not logged in. you can do whatever you want here.
     // for demonstration purposes, we simply show the "you are not logged in" view.
