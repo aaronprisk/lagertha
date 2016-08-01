@@ -9,9 +9,9 @@
 
 Lagertha consists of two components:
 
->**Lagertha Server** - Creates manages tasks for Lagertha connected Clients
+>**Lagertha Server** - Creates, manages and logs tasks for Lagertha connected Clients.
 
-> **Lagertha Client** - Service that runs on client devices and processes tasks
+> **Lagertha Client** - Service that runs on client devices and processes tasks created by Lagertha Server.
 
 
 ## Features
@@ -35,8 +35,6 @@ $ sudo mysql_secure_installation
 ```
 Create Lagertha directory and clone Lagertha Repo to local file
 ```
-$ mkdir lagertha
-$ cd lagertha
 $ git clone https://github.com/aaronprisk/lagertha.git
 ```
 Run Lagertha install script
