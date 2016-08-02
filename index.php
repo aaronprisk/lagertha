@@ -35,6 +35,7 @@ if ($login->isUserLoggedIn() == true) {
     // for demonstration purposes, we simply show the "you are logged in" view.
     include("views/logged_in.php");
     include("header/header.php");
+    include("includes/test_functions.php");
 
 } else {
     // the user is not logged in. you can do whatever you want here.
@@ -55,6 +56,11 @@ if ($login->isUserLoggedIn() == true) {
  <br />
  <br />The name <i>Lagertha</i> is in honor of the badass shield maiden from Norse legends.<br />
  <br />
+ <strong><img src="/images/active.png" width=16> Active Hosts: 
+ <?php
+ checkActive()
+ ?>
+ </strong>
  <br />
 
 
