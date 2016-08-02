@@ -39,7 +39,7 @@ if ($login->isUserLoggedIn() == true) {
           <div class="panel-body">
 
 			<?php
-			groupPull();
+			groupPull($link);
 			?>
 			
 			<form action='add_group.php'>

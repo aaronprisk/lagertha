@@ -88,7 +88,7 @@ function hostPull($link,$terms) {
 			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
 	}
 	echo "</td></tr></tfoot></tbody></table>";
-   mysqli_close($con); 
+   mysqli_close($link); 
 	} else {
     echo "<h3>No Hosts Found</h3>";
 	}
@@ -191,7 +191,7 @@ function taskPull($link,$host_id) {
 			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
 	}
 	echo "</td></tr></tfoot></tbody></table>";
-   mysqli_close($con);
+   mysqli_close($link);
    
 	} else {
     echo "<h3>No Active Tasks</h3>";
@@ -203,10 +203,9 @@ function taskPull($link,$host_id) {
 		{
 			echo "There was an error canceling the task!";	}
 	else {			
-			mysqli_close($con);
    		echo"<script>window.location.href = 'task_list.php';</script>";}			
 		} 	
-		
+mysqli_close($link);
 } // End of taskPull function
 
 
@@ -216,81 +215,37 @@ function taskPull($link,$host_id) {
 
 // Pull groups from DB
 
-function groupPull($terms) {
+function groupPull($link) {
 	
-   $query = "SELECT * FROM groups ORDER BY groupid"; 
+   $query = "SELECT * FROM groups ORDER BY groupid LIMIT "; 
+	// Pagination variables 
+	$perpage = 10;
+	if(isset($_GET["page"])){
+		$page = intval($_GET["page"]);}
+	else {
+		$page = 1;}
+	$calc = $perpage * $page;
+	$start = $calc - $perpage;
 	// Query the database for the results
-	$results = mysql_query($query);
-	// Get number of Total Rows and set variable
-	$rows = mysql_num_rows($results);
+	$result = $link->query($query . $start . "," . $perpage);
 
-	if(!$rows) {
-		echo "<h2>0 Search Results for &quot$terms&quot</h2><br />";
-	} else {
+	if ($result->num_rows > 0) {
+		echo "
+   	<div class='row'>
+   	<div class='col-md-12'>
+  	 	<table class='table table-striped'>	
+		<thead>
+		<tbody>
+		<th></th>
+		<th>GroupID</th>
+		<th>Group Name</th>
+		<th>Owner</th>
+		<th>Info</th>
+		<th></th>
+		</thead>";
 
-		//echo "<h3>Search Results for &quot$terms&quot</h3><br />";
-	// Set the number of results to display per page
-	$page_rows = 10;
-
-	// Determine the number for the last page
-	$last = ceil($rows/$page_rows);
-
-	$pagenum = $_REQUEST['pagenum'];
-	if (!(isset($pagenum))) {
-		$pagenum = 1;
-	}
-
-	// The page number cannot be less than 1 or greater then the maximum number of pages
-	// It must also exist, if not then display first page.
-	if ($pagenum < 1) {
-		$pagenum = 1;
-	} elseif ($pagenum > $last) {
-		$pagenum = $last;
-	}
-
-	// Find the maximum amount of pages that exist for the query
-	$max = ' limit ' .($pagenum - 1) * $page_rows .',' .$page_rows; 
-		
-	// Query the database for the results
-	$results = mysql_query($query);
-	// Get number of Total Rows and set variable
-	$rows = mysql_num_rows($results);
-
-	if(!$rows) {
-		echo "<h2>No Groups Found</h2><br />";
-	} else {
-	
-	// Try Query or Kill Connection
-	$data_p = mysql_query($query . $max) or die(mysql_error());
-	
-	
-	// Display PSSA Container and Table
-	echo "
-   <div class='row'>
-   <div class='col-md-12'>
-   <table class='table table-striped'>	
-	<thead>
-	<tbody>
-	<th></th>
-	<th>GroupID</th>
-	<th>Group Name</th>
-	<th>Owner</th>
-	<th>Info</th>
-	<th></th>
-	</thead>
-	";
-
-	// Display Each Record
-	while ($row = mysql_fetch_array($data_p)) {
-		
-		// Display the records from the database
-		echo "<tr>
-     	<td>
-     		<form action='view_group.php'>
-     		<input type='hidden' name='group_id' value='" . $row['groupid'] . "'/>   		
-      		<button type='submit' class='btn btn-xs btn-default'>View</button>
-         </form>
-		</td>      
+    while($row = $result->fetch_assoc()) {
+		echo "<tr><td><form action='view_group.php'><input type='hidden' name='group_id' value='" . $row['groupid'] . "'/><button type='submit' class='btn btn-xs btn-default'>View</button></form></td>      
 		<td>" . $row['groupid'] . "</td>
 		<td>" . $row['name'] . "</td>
 		<td>" . $row['owner'] . "</td>
@@ -306,37 +261,38 @@ function groupPull($terms) {
 		";
 	}
 	
-	// PAGINATION IN FOOTER
+  // PAGINATION IN FOOTER
 	echo "<tfoot><tr><td colspan=8>";
-
-	if ($pagenum == 1) { } else {
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=1$getappend&terms=$terms$getorder'> <<-First</a> ";
-		echo " ";
-		$previous = $pagenum-1;
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$previous$getappend&terms=$terms$getorder'> <-Previous</a> ";
-	} 
-
-	//just a spacer
-	echo "Viewing Page $pagenum of $last";
-
-	 //This does the same as above, only checking if we are on the last page, and then generating the Next and Last links
-	 if ($pagenum == $last) {
-	 } else {
-		$next = $pagenum+1;
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$next$getappend&terms=$terms$getorder'>Next -></a> ";
-		echo " ";
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last$getappend&terms=$terms$getorder'>Last ->></a> ";
+	if(isset($page))	{
+	$result = mysqli_query($link,"select Count(*) As Total from groups");
+	$rows = mysqli_num_rows($result);
+		if($rows) {
+			$rs = mysqli_fetch_assoc($result);
+			$total = $rs["Total"]; }
+			$totalPages = ceil($total / $perpage);
+		if($page <=1 ){
+			echo ""; }
+		else {
+		$j = $page - 1;
+		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'>< Prev</a></span>";}
+		
+		for($i=1; $i <= $totalPages; $i++){
+			if($i<>$page){
+				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";}
+			else {
+				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
+		if($page == $totalPages ){
+			echo "";}
+		else {
+			$j = $page + 1;
+			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
 	}
-	
-	echo "</td></tr></tfoot>";
-	echo "</tbody>";
-	echo "</table>";
-	echo "</div>";
-	echo "</div>";
-		} 
+	echo "</td></tr></tfoot></tbody></table>";
+	} else {
+    echo "<h3>No Groups Found</h3>";
 	}
-
-}
+mysqli_close($link);
+} // end of groupPull function
 
 
 
@@ -387,7 +343,7 @@ function viewHost($link,$host_id) {
  	 		
 	}	
 	// Display Recent Task Info
-	//logPull($host_id);
+	logPull($host_id);
 	
 	}
 		echo"
@@ -400,87 +356,52 @@ function viewHost($link,$host_id) {
 }
 
 
-// Pulls logged Tasks from DB
 
 
 
 
 
-function logPull($host_id) {
+
+
+
+
+
+
+function logPull($link, $host_id) {
 
    if ($host_id == NULL){
-   	$query = "SELECT * FROM tasks WHERE pending = 0 ORDER BY taskid"; 
+   	$query = "SELECT * FROM tasks WHERE pending = 0 ORDER BY taskid LIMIT "; 
    	}
 	else {
 		$query = "SELECT * FROM tasks WHERE hostid = " . $host_id; 	
 		}	
-	
+	$perpage = 10;
+	if(isset($_GET["page"])){
+		$page = intval($_GET["page"]);}
+	else {
+		$page = 1;}
+	$calc = $perpage * $page;
+	$start = $calc - $perpage;
 	// Query the database for the results
-	$results = mysql_query($query);
-	// Get number of Total Rows and set variable
-	$rows = mysql_num_rows($results);
+	$result = $link->query($query . $start . "," . $perpage);
 
-	if(!$rows) {
-		echo "<h5>No Logged Tasks</h5><br />";
-	} else {
+	if ($result->num_rows > 0) {
+		echo "
+   	<div class='row'>
+   	<div class='col-md-12'>
+   	<table class='table table-striped'>	
+		<thead>
+		<tbody>
+		<th></th>
+		<th>TaskID</th>
+		<th>Task Type</th>
+		<th>Host</th>
+		<th>Status</th>
+		<th>User</th>
+		<th>Time Stamp</th>
+		</thead>";
 
-		//echo "<h4>Search Results for &quot$terms&quot</h4><br />";
-	// Set the number of results to display per page
-	$page_rows = 10;
-
-	// Determine the number for the last page
-	$last = ceil($rows/$page_rows);
-
-	$pagenum = $_REQUEST['pagenum'];
-	if (!(isset($pagenum))) {
-		$pagenum = 1;
-	}
-
-	// The page number cannot be less than 1 or greater then the maximum number of pages
-	// It must also exist, if not then display first page.
-	if ($pagenum < 1) {
-		$pagenum = 1;
-	} elseif ($pagenum > $last) {
-		$pagenum = $last;
-	}
-
-	// Find the maximum amount of pages that exist for the query
-	$max = ' limit ' .($pagenum - 1) * $page_rows .',' .$page_rows; 
-		
-	// Query the database for the results
-	$results = mysql_query($query);
-	// Get number of Total Rows and set variable
-	$rows = mysql_num_rows($results);
-
-	if(!$rows) {
-		echo "<h2>No Logs Found</h2><br />";
-	} else {
-	
-	// Try Query or Kill Connection
-	$data_p = mysql_query($query . $max) or die(mysql_error());
-	
-	
-	// Display PSSA Container and Table
-	echo "
-   <div class='row'>
-   <div class='col-md-12'>
-   <table class='table table-striped'>	
-	<thead>
-	<tbody>
-	<th></th>
-	<th>TaskID</th>
-	<th>Task Type</th>
-	<th>Host</th>
-	<th>Status</th>
-	<th>User</th>
-	<th>Time Stamp</th>
-	</thead>
-	";
-
-	// Display Each Record
-	while ($row = mysql_fetch_array($data_p)) {
-		
-
+    while($row = $result->fetch_assoc()) {
 		// Display the records from the database
 		echo "<tr>
      	<td>
@@ -522,40 +443,39 @@ function logPull($host_id) {
 		<td>" . $row['user'] . "</td>
 		<td>" . $row['timestamp'] . "</td>   
 		</tr>";
-		
-		
 	}
 	
-	// PAGINATION IN FOOTER
+	 // PAGINATION IN FOOTER
 	echo "<tfoot><tr><td colspan=8>";
-
-	if ($pagenum == 1) { } else {
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=1$getappend&terms=$terms$getorder'> <<-First</a> ";
-		echo " ";
-		$previous = $pagenum-1;
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$previous$getappend&terms=$terms$getorder'> <-Previous</a> ";
-	} 
-
-	//just a spacer
-	echo "Viewing Page $pagenum of $last";
-
-	 //This does the same as above, only checking if we are on the last page, and then generating the Next and Last links
-	 if ($pagenum == $last) {
-	 } else {
-		$next = $pagenum+1;
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$next$getappend&terms=$terms$getorder'>Next -></a> ";
-		echo " ";
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last$getappend&terms=$terms$getorder'>Last ->></a> ";
+	if(isset($page))	{
+	$result = mysqli_query($link,"select Count(*) As Total from tasks");
+	$rows = mysqli_num_rows($result);
+		if($rows) {
+			$rs = mysqli_fetch_assoc($result);
+			$total = $rs["Total"]; }
+			$totalPages = ceil($total / $perpage);
+		if($page <=1 ){
+			echo ""; }
+		else {
+		$j = $page - 1;
+		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'>< Prev</a></span>";}
+		
+		for($i=1; $i <= $totalPages; $i++){
+			if($i<>$page){
+				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";}
+			else {
+				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
+		if($page == $totalPages ){
+			echo "";}
+		else {
+			$j = $page + 1;
+			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
 	}
-	
-	echo "</td></tr></tfoot>";
-	echo "</tbody>";
-	echo "</table>";
-	echo "</div>";
-	echo "</div>";
-	
-		} 
+	echo "</td></tr></tfoot></tbody></table>";
+	} else {
+    echo "<h3>No Groups Found</h3>";
 	}
+mysqli_close($link);
 }
 
 
@@ -837,26 +757,27 @@ function viewTask($task_id) {
 
 
 
-function createHost($hostname,$mac) {
-	
-$bytes = str_split($mac, 2);	
-$newmac = implode(':', $bytes);
-	
-mysql_query("INSERT INTO hosts (hostid, mac, hostname, os, details, last_check) VALUES ('', '$newmac', '$hostname', '', '', '')") or die(mysql_error());
-	if(mysql_errno()){
-		echo "Something went wrong...";	
-		}
-		else {
-		echo"<script>	
-		window.location.href = 'host_list.php';
-		</script>";
-	}
-}
+function createHost($link,$hostname,$mac) {
+	$bytes = str_split($mac, 2);	
+	$newmac = implode(':', $bytes);
+	$taskid = $_POST['taskid'];
+	$query = "INSERT INTO hosts (hostid, mac, hostname, os, details, last_check) VALUES ('', '$newmac', '$hostname', '', '', '')";
+	if (!mysqli_query($link,$query))
+		{
+			echo "<h1>There was an error creating host!</h1><br />";
+			mysqli_close($link);	}
+	else {			
+			mysqli_close($link);
+   		echo"<script>window.location.href = 'host_list.php';</script>";}	
+   					 			
+} 	// end of createHost function
 
 
 
 
-function viewGroup($group_id) {
+
+
+function viewGroup($link,$group_id) {
 	
    $query = "SELECT * FROM group_members WHERE groupid = $group_id"; 
 	// Query the database for the results

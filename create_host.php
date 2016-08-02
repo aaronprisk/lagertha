@@ -20,14 +20,10 @@ if ($login->isUserLoggedIn() == true) {
     include("views/not_logged_in.php");
 }
 	
-
-	$hostname = mysql_real_escape_string(urldecode($_REQUEST['hostname']));
-	$mac = mysql_real_escape_string(urldecode($_REQUEST['mac']));
-	$details = mysql_real_escape_string(urldecode($_REQUEST['details']));
-		
-	createHost($hostname,$mac);
-
-	
+	$hostname = mysqli_real_escape_string($link, $_REQUEST['hostname']);
+	$mac = mysqli_real_escape_string($link, $_REQUEST['mac']);
+	$details = mysqli_real_escape_string($link, $_REQUEST['details']);
+	createHost($link,$hostname,$mac);
 	?>
 
 

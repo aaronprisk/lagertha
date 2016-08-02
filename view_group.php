@@ -40,13 +40,9 @@ if ($login->isUserLoggedIn() == true) {
 
 	<!-- Content -->
 	<?php
-	$group_id = mysql_real_escape_string(urldecode($_REQUEST['group_id']));
-
-	
+	$group_id = mysqli_real_escape_string($link, $_REQUEST['group_id']);
 	// Pull data for each test section from functions
-	viewGroup($group_id);
-
-	
+	viewGroup($link,$group_id);
 	?>
 
 	

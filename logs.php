@@ -39,7 +39,7 @@ if ($login->isUserLoggedIn() == true) {
           <div class="panel-body">
 
 			<?php
-			logPull();
+			logPull($link);
 			?>
 
 
