@@ -40,7 +40,7 @@ if ($login->isUserLoggedIn() == true) {
 			
 
 			<?php
-			hostPull();
+			hostPull($link,$terms);
 			?>
 
 			<form action='add_host.php'>

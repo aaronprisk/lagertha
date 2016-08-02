@@ -40,13 +40,8 @@ if ($login->isUserLoggedIn() == true) {
 
 	<!-- Content -->
 	<?php
-	$host_id = mysql_real_escape_string(urldecode($_REQUEST['host_id']));
-
-	
-	// Pull data for each test section from functions
-	viewHost($host_id);
-
-	
+	$host_id = mysqli_real_escape_string($link, $_REQUEST['host_id']);
+	viewHost($link,$host_id);
 	?>
 
 	

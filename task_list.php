@@ -14,7 +14,7 @@ if ($login->isUserLoggedIn() == true) {
     include("header/header.php");
     echo "<meta http-equiv='refresh' content='10' >";
     include("includes/connect.php");
-    include("includes/test_functions.php");
+    include("includes/lagertha_functions.php");
 } else {
     // the user is not logged in. you can do whatever you want here.
     // for demonstration purposes, we simply show the "you are not logged in" view.
@@ -40,7 +40,7 @@ if ($login->isUserLoggedIn() == true) {
           <div class="panel-body">
 
 			<?php
-			taskPull();
+			taskPull($link);
 			?>
 
 
