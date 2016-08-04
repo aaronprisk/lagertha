@@ -91,17 +91,14 @@ function hostPull($link,$terms) {
    mysqli_close($link); 
 	} else {
     echo "<h3>No Hosts Found</h3>";
-	}
-
-
-	
+	}	
 } // End of hostPull function
 
 
 
 
 function taskPull($link,$host_id) {
-	
+		
 	if ($host_id == NULL){
    	$query = "SELECT * FROM tasks WHERE pending = 1 ORDER BY taskid LIMIT "; 
    	}
@@ -191,8 +188,6 @@ function taskPull($link,$host_id) {
 			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
 	}
 	echo "</td></tr></tfoot></tbody></table>";
-   mysqli_close($link);
-   
 	} else {
     echo "<h3>No Active Tasks</h3>";
 	}
@@ -203,6 +198,7 @@ function taskPull($link,$host_id) {
 		{
 			echo "There was an error canceling the task!";	}
 	else {			
+			mysqli_close($link);
    		echo"<script>window.location.href = 'task_list.php';</script>";}			
 		} 	
 mysqli_close($link);
@@ -305,7 +301,6 @@ function viewHost($link,$host_id) {
 	$groupquery = "SELECT name FROM groups";
 	$result = $link->query($query);
 	$groupresult = $link->query($groupquery);
-	echo "<h1>$host_id</h1>";
 	if ($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
 			$hostid = $row['hostid'];
@@ -359,21 +354,13 @@ function viewHost($link,$host_id) {
 
 
 
-
-
-
-
-
-
-
-
 function logPull($link, $host_id) {
 
    if ($host_id == NULL){
    	$query = "SELECT * FROM tasks WHERE pending = 0 ORDER BY taskid LIMIT "; 
    	}
 	else {
-		$query = "SELECT * FROM tasks WHERE hostid = " . $host_id; 	
+		$query = "SELECT * FROM tasks WHERE hostid = " . $host_id . "LIMIT "; 	
 		}	
 	$perpage = 10;
 	if(isset($_GET["page"])){
@@ -697,63 +684,40 @@ elseif($host_id) {
 
 
 
-function viewTask($task_id) {
-
+function viewTask($link,$task_id) {
 	$query = "SELECT * FROM tasks WHERE taskid = " . $task_id; 
-	// Query the database for the results
-	$results = mysql_query($query);
-	// Get number of Total Rows and set variable
-	$rows = mysql_num_rows($results);
-
-	if(!$rows) {
-		echo "<br /><h2>No Task Selected</h2><br />";
-	} else {
-
-
-	// Try Query or Kill Connection
-	$data_p = mysql_query($query) or die(mysql_error());	
-	while ($row = mysql_fetch_array($data_p)) {
-
-		
-	// Display Task Info
-	echo
-	"<h4>Task Info</h4>
-	<strong>TaskID: </strong>" . $row['taskid'] . "<br />
-	<strong>Timestamp: </strong>" . $row['timestamp'] . "<br />
-	 <strong>Hostname: </strong>" . $row['host'] . "<br />";
-		if ($row['tasktype'] == 0){
-		echo "<strong>Task Type: </strong><i class='fa fa-download' aria-hidden='true'></i> System Update<br />";
-		} 
-		if ($row['tasktype'] == 1){
-		echo "<strong>Task Type: </strong><i class='fa fa-archive' aria-hidden='true'></i> Package Install<br />";
-		} 		
-		if ($row['tasktype'] == 2){
-		echo "<strong>Task Type: </strong><i class='fa fa-trash' aria-hidden='true'></i> Package Remove<br />";
-		} 	
-		if ($row['tasktype'] == 3){
-		echo "<strong>Task Type: </strong><i class='fa fa-picture-o' aria-hidden='true'></i> Wallpaper<br />";
-		} 	
-		if ($row['status'] == 0){
-		echo "<strong>Task Status: </strong><i class='fa fa-spinner fa-pulse' aria-hidden='true'></i> In Progress<br />";
-		} 
-		if ($row['status'] == 1){
-		echo "<strong>Task Status: </strong><i class='fa fa-check-circle' aria-hidden='true'></i> Completed<br />";
-		} 
-		if ($row['status'] == 2){
-		echo "<strong>Task Status: </strong><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Failed<br />";
-		} 
-		if ($row['status'] == 3){
-		echo "<strong>Task Status: </strong><i class='fa fa-ban' aria-hidden='true'></i> Canceled<br />";
-		} 
-	 echo "
-	 <strong>Package: </strong>" . $row['package'] . "<br />
- 	 <strong>Info: </strong>" . $row['info'] . "<br />
- 	 <strong>Created By: </strong>" . $row['user'] . "<br />";
-	}
-		
-
-	}
-}
+	$result = $link->query($query);
+	if ($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+			echo
+			"<h4>Task Info</h4>
+			<strong>TaskID: </strong>" . $row['taskid'] . "<br />
+			<strong>Timestamp: </strong>" . $row['timestamp'] . "<br />
+			<strong>Hostname: </strong>" . $row['host'] . "<br />";
+			if ($row['tasktype'] == 0){
+				echo "<strong>Task Type: </strong><i class='fa fa-download' aria-hidden='true'></i> System Update<br />";} 
+			if ($row['tasktype'] == 1){
+				echo "<strong>Task Type: </strong><i class='fa fa-archive' aria-hidden='true'></i> Package Install<br />";} 		
+			if ($row['tasktype'] == 2){
+				echo "<strong>Task Type: </strong><i class='fa fa-trash' aria-hidden='true'></i> Package Remove<br />";} 	
+			if ($row['tasktype'] == 3){
+				echo "<strong>Task Type: </strong><i class='fa fa-picture-o' aria-hidden='true'></i> Wallpaper<br />";} 	
+			if ($row['status'] == 0){
+				echo "<strong>Task Status: </strong><i class='fa fa-spinner fa-pulse' aria-hidden='true'></i> In Progress<br />";} 
+			if ($row['status'] == 1){
+				echo "<strong>Task Status: </strong><i class='fa fa-check-circle' aria-hidden='true'></i> Completed<br />";} 
+			if ($row['status'] == 2){
+				echo "<strong>Task Status: </strong><i class='fa fa-exclamation-triangle' aria-hidden='true'></i> Failed<br />";} 
+			if ($row['status'] == 3){
+				echo "<strong>Task Status: </strong><i class='fa fa-ban' aria-hidden='true'></i> Canceled<br />";} 
+			 echo "
+	 		<strong>Package: </strong>" . $row['package'] . "<br />
+ 	 		<strong>Info: </strong>" . $row['info'] . "<br />
+ 			<strong>Created By: </strong>" . $row['user'] . "<br />";
+			}
+		} else {
+		echo "<h3>Task not found</h3>";}	
+} // end of viewTask function
 
 
 
@@ -778,133 +742,85 @@ function createHost($link,$hostname,$mac) {
 
 
 function viewGroup($link,$group_id) {
-	
-   $query = "SELECT * FROM group_members WHERE groupid = $group_id"; 
+		
+   $query = "SELECT * FROM group_members WHERE groupid = $group_id LIMIT "; 	
+	// Pagination variables 
+	$perpage = 10;
+	if(isset($_GET["page"])){
+		$page = intval($_GET["page"]);}
+	else {
+		$page = 1;}
+	$calc = $perpage * $page;
+	$start = $calc - $perpage;
 	// Query the database for the results
-	$results = mysql_query($query);
-	// Get number of Total Rows and set variable
-	$rows = mysql_num_rows($results);
+	$result = $link->query($query . $start . "," . $perpage);
 
-	if(!$rows) {
-		echo "<h5>No Group Members Found</h5><br />";
-	} else {
-
-		//echo "<h4>Search Results for &quot$terms&quot</h4><br />";
-	// Set the number of results to display per page
-	$page_rows = 10;
-
-	// Determine the number for the last page
-	$last = ceil($rows/$page_rows);
-
-	$pagenum = $_REQUEST['pagenum'];
-	if (!(isset($pagenum))) {
-		$pagenum = 1;
-	}
-
-	// The page number cannot be less than 1 or greater then the maximum number of pages
-	// It must also exist, if not then display first page.
-	if ($pagenum < 1) {
-		$pagenum = 1;
-	} elseif ($pagenum > $last) {
-		$pagenum = $last;
-	}
-
-	// Find the maximum amount of pages that exist for the query
-	$max = ' limit ' .($pagenum - 1) * $page_rows .',' .$page_rows; 
-		
-	// Query the database for the results
-	$results = mysql_query($query);
-	// Get number of Total Rows and set variable
-	$rows = mysql_num_rows($results);
-
-	if(!$rows) {
-		echo "<h2>No Group Members</h2><br />";
-	} else {
+	if ($result->num_rows > 0) {
+		echo "
+ 	 	<div class='row'>
+  	 	<div class='col-md-12'>
+   	<table class='table table-striped'>	
+		<thead>
+		<tbody>
+		<th>ID</th>
+		<th>Hostname</th>
+		<th>MAC</th>
+		<th></th>
+		</thead>";	
 	
-	// Try Query or Kill Connection
-	$data_p = mysql_query($query . $max) or die(mysql_error());
-	
-	
-	// Display PSSA Container and Table
-	echo "
-   <div class='row'>
-   <div class='col-md-12'>
-   <table class='table table-striped'>	
-	<thead>
-	<tbody>
-	<th>ID</th>
-	<th>Hostname</th>
-	<th>MAC</th>
-	<th></th>
-	</thead>
-	";
-
-	// Display Each Record
-	while ($row = mysql_fetch_array($data_p)) {
-		
-
-		// Display the records from the database
-		echo "<tr>  
-		<td>" . $row['group_mem_num'] . "</td>  
-		<td>" . $row['hostname'] . "</td>
-		<td>" . $row['mac'] . "</td> 
-		<td>
-		<form action '' method='POST'>
-		<input type='hidden' name='group_mem_num' value='" . $row['group_mem_num'] . "'/>
-		<button type='submit' class='btn btn-xs btn-danger' name='remove'>Remove From Group</button>
-		</form>	
-		</td>
-		</tr>";
-		
-		
-	}
-	
-	// PAGINATION IN FOOTER
+		   while($row = $result->fetch_assoc()) {
+				echo "<tr>  
+				<td>" . $row['group_mem_num'] . "</td>  
+				<td>" . $row['hostname'] . "</td>
+				<td>" . $row['mac'] . "</td> 
+				<td>
+				<form action '' method='POST'><input type='hidden' name='group_mem_num' value='" . $row['group_mem_num'] . "'/><button type='submit' class='btn btn-xs btn-danger' name='remove'>Remove From Group</button></form>	</td>
+				</tr>";
+				}
+				
+ // PAGINATION IN FOOTER
 	echo "<tfoot><tr><td colspan=8>";
-
-	if ($pagenum == 1) { } else {
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=1$getappend&terms=$terms$getorder'> <<-First</a> ";
-		echo " ";
-		$previous = $pagenum-1;
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$previous$getappend&terms=$terms$getorder'> <-Previous</a> ";
-	} 
-
-	//just a spacer
-	echo "Viewing Page $pagenum of $last";
-
-	 //This does the same as above, only checking if we are on the last page, and then generating the Next and Last links
-	 if ($pagenum == $last) {
-	 } else {
-		$next = $pagenum+1;
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$next$getappend&terms=$terms$getorder'>Next -></a> ";
-		echo " ";
-		echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last$getappend&terms=$terms$getorder'>Last ->></a> ";
+	if(isset($page))	{
+	$result = mysqli_query($link,"select Count(*) As Total from group_members");
+	$rows = mysqli_num_rows($result);
+		if($rows) {
+			$rs = mysqli_fetch_assoc($result);
+			$total = $rs["Total"]; }
+			$totalPages = ceil($total / $perpage);
+		if($page <=1 ){
+			echo ""; }
+		else {
+		$j = $page - 1;
+		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'>< Prev</a></span>";}
+		
+		for($i=1; $i <= $totalPages; $i++){
+			if($i<>$page){
+				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";}
+			else {
+				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
+		if($page == $totalPages ){
+			echo "";}
+		else {
+			$j = $page + 1;
+			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
 	}
+	echo "</td></tr></tfoot></tbody></table>";
+
+	} else {
+    echo "<h3>No Hosts Found</h3>";
+	}	
 	
-	echo "</td></tr></tfoot>";
-	echo "</tbody>";
-	echo "</table>";
-	echo "</div>";
-	echo "</div>";
-	
-		} 
-	}
 	
 	if(isset($_POST['remove'])){
 	$group_mem_num = $_POST['group_mem_num'];
-	mysql_query("DELETE FROM group_members WHERE group_mem_num='$group_mem_num'")or die(mysql_error());
-		if(mysql_errno()){
-		echo "Shit.. something broke.";	
-			}
-			else {			
-   				echo"<script>	
-					window.location.href = 'groups.php';
-					</script>";
-			}			
-		} 		
-	
-	
-}
-
+	if (!mysqli_query($link, "DELETE FROM group_members WHERE group_mem_num = $group_mem_num"))
+		{
+			echo "There was an error removing the group member!";	}
+	else {			
+			mysqli_close($link);
+   		echo"<script>window.location.href = 'groups.php';</script>";}			
+		} 	
+mysqli_close($link);
+} // end of viewGroup function
 
 ?>

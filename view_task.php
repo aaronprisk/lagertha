@@ -40,13 +40,8 @@ if ($login->isUserLoggedIn() == true) {
 
 	<!-- Content -->
 	<?php
-	$task_id = mysql_real_escape_string(urldecode($_REQUEST['task_id']));
-
-	
-	// Pull data for each test section from functions
-	viewTask($task_id);
-
-	
+	$task_id = mysqli_real_escape_string($link, $_REQUEST['task_id']);
+	viewTask($link,$task_id);
 	?>
 
 	
