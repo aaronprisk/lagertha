@@ -56,12 +56,6 @@ if ($login->isUserLoggedIn() == true) {
  <br />
  <br />The name <i>Lagertha</i> is in honor of the badass shield maiden from Norse legends.<br />
  <br />
- <strong><img src="/images/active.png" width=16> Active Hosts: 
- <?php
- checkActive()
- ?>
- </strong>
- <br />
 
 
 <br />

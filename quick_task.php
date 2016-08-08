@@ -38,14 +38,12 @@ if ($login->isUserLoggedIn() == true) {
 
 	<!-- Content -->
 	<?php
-	$host_id = mysql_real_escape_string(urldecode($_REQUEST['host_id']));
-	$group_id = mysql_real_escape_string(urldecode($_REQUEST['group_id']));
-	$group_name = mysql_real_escape_string(urldecode($_REQUEST['group_name']));
-	$host_name = mysql_real_escape_string(urldecode($_REQUEST['host_name']));
-	$mac_addr = mysql_real_escape_string(urldecode($_REQUEST['mac_addr']));
-	
-	// Pull data for each test section from functions
-	quickTask($host_id, $host_name, $mac_addr, $group_id, $group_name);
+	$host_id = mysqli_real_escape_string($link, $_REQUEST['host_id']);
+	$group_id = mysqli_real_escape_string($link, $_REQUEST['group_id']);
+	$group_name = mysqli_real_escape_string($link, $_REQUEST['group_name']);
+	$host_name = mysqli_real_escape_string($link, $_REQUEST['host_name']);
+	$mac_addr = mysqli_real_escape_string($link, $_REQUEST['mac_addr']);
+	quickTask($link,$host_id, $host_name, $mac_addr, $group_id, $group_name);
 	?>
 
 <!-- End Table -->

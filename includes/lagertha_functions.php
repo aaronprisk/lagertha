@@ -11,7 +11,7 @@ function hostPull($link,$terms) {
    	$query = "SELECT * FROM hosts ORDER BY hostname LIMIT "; }	
    	
 	// Pagination variables 
-	$perpage = 10;
+	$perpage = 15;
 	if(isset($_GET["page"])){
 		$page = intval($_GET["page"]);}
 	else {
@@ -70,6 +70,7 @@ function hostPull($link,$terms) {
 			$rs = mysqli_fetch_assoc($result);
 			$total = $rs["Total"]; }
 			$totalPages = ceil($total / $perpage);
+			echo "<strong>Page:</strong>" . $page . "/" . $totalPages . "<br />";
 		if($page <=1 ){
 			echo ""; }
 		else {
@@ -78,7 +79,8 @@ function hostPull($link,$terms) {
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";}
+				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";
+				}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
 		if($page == $totalPages ){
@@ -107,7 +109,7 @@ function taskPull($link,$host_id) {
 		}	
 	
 	// Pagination variables 
-	$perpage = 10;
+	$perpage = 15;
 	if(isset($_GET["page"])){
 		$page = intval($_GET["page"]);}
 	else {
@@ -170,6 +172,7 @@ function taskPull($link,$host_id) {
 			$rs = mysqli_fetch_assoc($result);
 			$total = $rs["Total"]; }
 			$totalPages = ceil($total / $perpage);
+			echo "<strong>Page:</strong>" . $page . "/" . $totalPages . "<br />";
 		if($page <=1 ){
 			echo ""; }
 		else {
@@ -178,7 +181,8 @@ function taskPull($link,$host_id) {
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";}
+				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";
+				}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
 		if($page == $totalPages ){
@@ -266,6 +270,7 @@ function groupPull($link) {
 			$rs = mysqli_fetch_assoc($result);
 			$total = $rs["Total"]; }
 			$totalPages = ceil($total / $perpage);
+			echo "<strong>Page:</strong>" . $page . "/" . $totalPages . "<br />";
 		if($page <=1 ){
 			echo ""; }
 		else {
@@ -274,7 +279,8 @@ function groupPull($link) {
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";}
+				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";
+				}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
 		if($page == $totalPages ){
@@ -441,6 +447,7 @@ function logPull($link, $host_id) {
 			$rs = mysqli_fetch_assoc($result);
 			$total = $rs["Total"]; }
 			$totalPages = ceil($total / $perpage);
+			echo "<strong>Page:</strong>" . $page . "/" . $totalPages . "<br />";
 		if($page <=1 ){
 			echo ""; }
 		else {
@@ -449,7 +456,8 @@ function logPull($link, $host_id) {
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";}
+				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";
+				}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
 		if($page == $totalPages ){
@@ -475,11 +483,10 @@ mysqli_close($link);
 // Create a quick task from host list
 
 
-function quickTask($host_id, $host_name, $mac_addr, $group_id, $group_name) {
+function quickTask($link,$host_id, $host_name, $mac_addr, $group_id, $group_name) {
 	
 // Pull logged in user ID
 $user_id=$_SESSION['user_name'];
-
 
 // Check if task is Group Task
 
@@ -524,18 +531,15 @@ if($group_id) {
 		</form>
 		";
 		
+		
 		// Pull all group members for task creation
-		$taskquery = "SELECT * FROM group_members WHERE groupid = " . $group_id; 
+		$memquery = "SELECT * FROM group_members WHERE groupid = " . $group_id; 
 		// Query the database for the results
-		$taskresults = mysql_query($taskquery);
-		// Get number of Total Rows and set variable
-		$rows = mysql_num_rows($taskresults);
-		if(!$rows) {
-			echo "<br /><h2>No hosts in selected group</h2><br />";
+		$memresult = $link->query($memquery);
+		if($memresult->num_rows <= 0) {
+			echo "<br /><h1>No hosts in selected group</h1><br />";
 		} else {
-			// Try adding new tasks for each group members
-			$data_t = mysql_query($taskquery) or die(mysql_error());	
-			while ($row = mysql_fetch_array($data_t)) {	
+			while($row = $memresult->fetch_assoc()) {
 				// Get hostname and hostid from group member and set variables
 				$mem_hostid = $row['hostid'];
 				$mem_host_name = $row['hostname'];	
@@ -545,48 +549,39 @@ if($group_id) {
 				if(isset($_POST['package'])){
 				$pkg = $_POST['pkg'];
 				$type = $_POST['type'];		
-				mysql_query("INSERT INTO tasks (taskid, host, mac hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())") or die(mysql_error());
-					if(mysql_errno()){
-					echo "Something went wrong...";	
-					}
-					else {
-					echo"<script>	
-					window.location.href = 'task_list.php';
-					</script>";
-					}
+				$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())";
+				echo $query;
+					if ($link->query($query) === TRUE) {
+    						echo"<script>window.location.href = 'task_list.php';</script>";
+						} else {
+   							echo "Error: " . $query . "<br>" . $link->error;}
 				}
+						
 
 				// GROUP UPDATE TASK
 				if(isset($_POST['update'])){
 				$type = 0;
-				mysql_query("INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '', '0', 'quick task', '$user_id', '', now())") or die(mysql_error());
-				if(mysql_errno()){
-					echo "Something went wrong...";	
-					}
-					else {
-					echo"<script>	
-					window.location.href = 'task_list.php';
-					</script>";
-					}
-				} 
+				$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
+					if ($link->query($query) === TRUE) {
+    						echo"<script>window.location.href = 'task_list.php';</script>";
+						} else {
+   							echo "Error: " . $query . "<br>" . $link->error;}
+				}
+				 
 
 				// GROUP VISUAL TASK
 				if(isset($_POST['visual'])){
 				$pkg = $_POST['pkg'];
 				$type = 3;
-				mysql_query("INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '', '0', 'quick task', '$user_id', '', now())") or die(mysql_error());
-				if(mysql_errno()){
-					echo "Something went wrong...";	
-					}
-					else {
-					echo"<script>	
-					window.location.href = 'task_list.php';
-					</script>";
-					}
-				} 
-			} 
-		}
-}// END OF GROUP TASK
+				$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
+					if ($link->query($query) === TRUE) {
+    						echo"<script>window.location.href = 'task_list.php';</script>";
+						} else {
+   							echo "Error: " . $query . "<br>" . $link->error;}
+				}
+			}
+		} 
+	} // END OF GROUP TASK
 
 elseif($host_id) {
 		echo "<h4>Task for host: <strong>" . $host_name . "</strong></h4>";
@@ -632,47 +627,34 @@ elseif($host_id) {
 		if(isset($_POST['package'])){
 			$pkg = $_POST['pkg'];
 			$type = $_POST['type'];
-	
-			mysql_query("INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('','$host_name', '$mac_addr', '$host_id', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())") or die(mysql_error());
-			if(mysql_errno()){
-			echo "Something went wrong...";	
-			}
-			else {
-			echo"<script>	
-			window.location.href = 'task_list.php';
-			</script>";
-			}
-		} 
-
+			$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('','$host_name', '$mac_addr', '$host_id', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())";
+					if ($link->query($query) === TRUE) {
+    						echo"<script>window.location.href = 'task_list.php';</script>";
+						} else {
+   							echo "Error: " . $query . "<br>" . $link->error;}
+				}
+				
 			// HOST UPDATE TASK
 			if(isset($_POST['update'])){
 			$type = 0;
-			mysql_query("INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$mac_addr', '$host_id', '$type', '1', '', '0', 'quick task', '$user_id', '', now())") or die(mysql_error());
-			if(mysql_errno()){
-				echo "Something went wrong...";	
+			$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$mac_addr', '$host_id', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
+					if ($link->query($query) === TRUE) {
+    						echo"<script>window.location.href = 'task_list.php';</script>";
+						} else {
+   							echo "Error: " . $query . "<br>" . $link->error;}
 				}
-				else {
-				echo"<script>	
-				window.location.href = 'task_list.php';
-				</script>";
-				}
-			} 
 
 
 		// HOST VISUAL TASK
 		if(isset($_POST['visual'])){
 			$pkg = $_POST['pkg'];
 			$type = 3;
-			mysql_query("INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$mac_addr', '$host_id', '$type', '1', '', '0', 'quick task', '$user_id', '', now())") or die(mysql_error());
-				if(mysql_errno()){
-				echo "Something went wrong...";	
+			$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$mac_addr', '$host_id', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
+					if ($link->query($query) === TRUE) {
+    						echo"<script>window.location.href = 'task_list.php';</script>";
+						} else {
+   							echo "Error: " . $query . "<br>" . $link->error;}
 				}
-				else {
-				echo"<script>	
-				window.location.href = 'task_list.php';
-				</script>";
-				}
-			} 
 		} // END OF HOST TASK
 } // end of quickTask Function
 
