@@ -9,11 +9,6 @@
       <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
       <script src="../js/bootstrap.min.js"></script>
       <script src="https://use.fontawesome.com/fedba56c13.js"></script>
-   	 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  		 <!--[if lt IE 9]>
-   	   <script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
-    	  <script src="../bower_components/respond/dest/respond.min.js"></script>
-  	  <![endif]-->
 
 </head>
 
@@ -46,6 +41,9 @@
             </li>
              <li>
 					<a href="media.php"><i class="fa fa-image" aria-hidden="true"></i> Media</a>          
+             </li>
+             <li>
+             	<a href="settings.php"><i class="fa fa-cog" aria-hidden="true"></i> Settings</a>
              </li>
              <li>
              	<a href="help.php"><i class="fa fa-question-circle" aria-hidden="true"></i> Help</a>

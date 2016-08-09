@@ -723,6 +723,27 @@ function createHost($link,$hostname,$mac) {
 
 
 
+function updateSettings($link,$check_freq) {
+	$query = "UPDATE settings SET check_freq = ". $check_freq . " WHERE settings_id=1";
+	if (!mysqli_query($link,$query))
+		{
+			echo "<h1>There was an error updating settings</h1><br />";
+			echo $query;
+			mysqli_close($link);	}
+	else {			
+			mysqli_close($link);
+   		echo"<script>window.location.href = 'settings.php';</script>";}	
+   					 			
+} 	// end of createHost function
+
+
+
+
+
+
+
+
+
 function viewGroup($link,$group_id) {
 		
    $query = "SELECT * FROM group_members WHERE groupid = $group_id LIMIT "; 	
