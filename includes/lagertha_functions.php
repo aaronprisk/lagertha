@@ -339,22 +339,43 @@ function viewHost($link,$host_id) {
 				echo "<span title='Client ACTIVE within last 5 minutes'><img src='images/active.png'  width='16' /></span>";}	
 		 	echo "
  	 		<strong>Last Task Check: </strong>" . $row['last_check'] . "<br /><br />
- 	 		<h4>Recent Tasks</h4>";
+ 	 		<h4>Create New task</h4>";
  	 		
  	 		
 	}	
-	// Display Recent Task Info
-	logPull($host_id);
 	
-	}
-		echo"
+	
+			echo"
 	 	<form action='quick_task.php'>
 		<input type='hidden' name='host_id' value='" . $hostid . "'/>
 		<input type='hidden' name='host_name' value='" . $hostname . "'/>
 		<input type='hidden' name='mac_addr' value='" . $hostmac . "'/>
       <button type='submit' class='btn btn-info'>Create Task</button>
 		</form>";
-}
+		
+		echo "
+		<hr>
+		<h4>Remove Host</h4>
+		<form action '' method='POST'><input type='hidden' name='hostmac' value='" . $hostmac . "'/><button type='submit' class='btn btn-danger' name='remove'>Remove Host</button></form></td>
+		<strong>WARNING!</strong> Removing a host is permanent. Host will need to be registered again for management.";
+	}
+	
+	if(isset($_POST['remove'])){
+	$hostmac = $_POST['hostmac'];
+	if (!mysqli_query($link, "DELETE FROM hosts WHERE mac = '$hostmac'"))
+		{
+			echo "There was an error removing the host!";	}
+	else {			
+			mysqli_close($link);
+   		echo"<script>window.location.href = 'host_list.php';</script>";}			
+		} 	
+	
+	
+	
+} //end of viewHost function
+
+
+
 
 
 
