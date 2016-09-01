@@ -48,10 +48,10 @@ function hostPull($link,$terms) {
 			// Create  table row and populate with data
     		echo "<tr><td><form action='view_host.php'><input type='hidden' name='host_id' value='" . $row['hostid'] . "'/><button type='submit' class='btn btn-xs btn-default'>View</button></form></td><td>"; 		
   		   // Check and display if task is active
-			if(($curtime-$tasktime) > 300) { 
-				echo "<span title='Client NOT ACTIVE within last 5 minutes'><img src='images/nonactive.png' width='16' /></span>";}	
+			if(($curtime-$tasktime) > 900) { 
+				echo "<span title='Client NOT ACTIVE within last 15 minutes'><img src='images/nonactive.png' width='16' /></span>";}	
 			else {
-				echo "<span title='Client ACTIVE within last 5 minutes'><img src='images/active.png'  width='16' /></span>";}
+				echo "<span title='Client ACTIVE within last 15 minutes'><img src='images/active.png'  width='16' /></span>";}
 			echo "</td> 
 			<td>" . $row['hostid'] . "</td>
 			<td>" . $row['hostname'] . "</td>
@@ -333,10 +333,10 @@ function viewHost($link,$host_id) {
 			echo "</ul></div>
 	 		<hr>
  	 		<h4>Task Info</h4>";
- 			if(($curtime-$tasktime) > 300) { 
-				echo "<span title='Client NOT ACTIVE within last 5 minutes'><img src='images/nonactive.png' width='16' /></span>";}	
+ 			if(($curtime-$tasktime) > 900) { 
+				echo "<span title='Client NOT ACTIVE within last 15 minutes'><img src='images/nonactive.png' width='16' /></span>";}	
 			else {
-				echo "<span title='Client ACTIVE within last 5 minutes'><img src='images/active.png'  width='16' /></span>";}	
+				echo "<span title='Client ACTIVE within last 15 minutes'><img src='images/active.png'  width='16' /></span>";}	
 		 	echo "
  	 		<strong>Last Task Check: </strong>" . $row['last_check'] . "<br /><br />
  	 		<h4>Create New task</h4>";
