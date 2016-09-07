@@ -1,5 +1,5 @@
 # Lagertha
-**PLEASE NOTE: This is still early in the works so it probably won't work quite yet!**
+**PLEASE NOTE: This is still early in the works so it may not work as expected!**
 
 **Lagertha** is an easy-to-use tool for the basic management of Linux devices. 
 
@@ -25,7 +25,7 @@ Lagertha consists of two components:
 
 ## Installation
 
-These steps are for installing Lagertha on an Ubuntu Server 14.04 box. Lagertha will likely run on most modern distros that have a LAMP/FAMP stack.
+These steps are for installing Lagertha on an Ubuntu Server 16.04 box. Lagertha will likely run on most modern distros that have a LAMP/FAMP stack.
 ```
 $ sudo apt-get install apache2 mysql-server php5-mysql git
 ```
@@ -37,7 +37,7 @@ Create Lagertha directory and clone Lagertha Repo to local file
 ```
 $ git clone https://github.com/aaronprisk/lagertha.git
 ```
-Run Lagertha install script
+Run Lagertha install script **COMING SOON
 ```
 $ cd bin
 $ sudo ./install-lagertha.sh
