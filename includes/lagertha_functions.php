@@ -539,7 +539,7 @@ if($group_id) {
 		<form action '' method='POST'>
  		  <p>Choose uploaded image to be used in task. To add more images, visit the Media page.</p>
 			<br />
-		<select>";			
+		<select name='wallpaper'>";			
 			$dirname = "uploads/";
 			$images = glob($dirname."*.*");
 			foreach($images as $image) {
@@ -592,9 +592,9 @@ if($group_id) {
 
 				// GROUP VISUAL TASK
 				if(isset($_POST['visual'])){
-				$pkg = $_POST['pkg'];
+				$selectwall = $_POST['wallpaper'];
 				$type = 3;
-				$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
+				$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '$selectwall', '0', 'quick task', '$user_id', '', now())";
 					if ($link->query($query) === TRUE) {
     						echo"<script>window.location.href = 'task_list.php';</script>";
 						} else {
@@ -632,7 +632,7 @@ elseif($host_id) {
 		<form action '' method='POST'>
  		  <p>Choose uploaded image to be used in task. To add more images, visit the Media page.</p>
 			<br />
-			<select>";			
+			<select name='wallpaper'>";			
 			$dirname = "uploads/";
 			$images = glob($dirname."*.*");
 			foreach($images as $image) {
@@ -668,9 +668,9 @@ elseif($host_id) {
 
 		// HOST VISUAL TASK
 		if(isset($_POST['visual'])){
-			$pkg = $_POST['pkg'];
+			$selectwall = $_POST['wallpaper'];
 			$type = 3;
-			$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$mac_addr', '$host_id', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
+			$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$mac_addr', '$host_id', '$type', '1', '$selectwall', '0', 'quick task', '$user_id', '', now())";
 					if ($link->query($query) === TRUE) {
     						echo"<script>window.location.href = 'task_list.php';</script>";
 						} else {
