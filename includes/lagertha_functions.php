@@ -275,11 +275,11 @@ function groupPull($link) {
 			echo ""; }
 		else {
 		$j = $page - 1;
-		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'>< Prev</a></span>";}
+		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='groups.php?page=$j'>< Prev</a></span>";}
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";
+				echo "<span><a id='page_a_link' href='groups.php?page=$i'> $i</a></span>";
 				}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
@@ -287,7 +287,7 @@ function groupPull($link) {
 			echo "";}
 		else {
 			$j = $page + 1;
-			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
+			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='groups.php?page=$j'> Next ></a></span>";}
 	}
 	echo "</td></tr></tfoot></tbody></table>";
 	} else {
@@ -473,11 +473,11 @@ function logPull($link, $host_id) {
 			echo ""; }
 		else {
 		$j = $page - 1;
-		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'>< Prev</a></span>";}
+		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='logs.php?page=$j'>< Prev</a></span>";}
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";
+				echo "<span><a id='page_a_link' href='logs.php?page=$i'> $i</a></span>";
 				}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
@@ -485,11 +485,11 @@ function logPull($link, $host_id) {
 			echo "";}
 		else {
 			$j = $page + 1;
-			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
+			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='logs.php?page=$j'> Next ></a></span>";}
 	}
 	echo "</td></tr></tfoot></tbody></table>";
 	} else {
-    echo "<h3>No Groups Found</h3>";
+    echo "<h3>No Logged Tasks Found</h3>";
 	}
 mysqli_close($link);
 }
@@ -815,23 +815,23 @@ function viewGroup($link,$group_id) {
 			echo ""; }
 		else {
 		$j = $page - 1;
-		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'>< Prev</a></span>";}
+		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='view_group.php?page=$j'>< Prev</a></span>";}
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";}
+				echo "<span><a id='page_a_link' href='view_group.php?page=$i'> $i</a></span>";}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
 		if($page == $totalPages ){
 			echo "";}
 		else {
 			$j = $page + 1;
-			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
+			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='view_group.php?page=$j'> Next ></a></span>";}
 	}
 	echo "</td></tr></tfoot></tbody></table>";
 
 	} else {
-    echo "<h3>No Hosts Found</h3>";
+    echo "<h3>No Group Members Found</h3>";
 	}	
 	
 	
