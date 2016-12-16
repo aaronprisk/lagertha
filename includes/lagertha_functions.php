@@ -304,7 +304,7 @@ mysqli_close($link);
 
 function viewHost($link,$host_id) {
 	$query = "SELECT * FROM hosts WHERE hostid = " . $host_id; 
-	$groupquery = "SELECT name FROM groups";
+	$groupquery = "SELECT groupid, name FROM groups";
 	$result = $link->query($query);
 	$groupresult = $link->query($groupquery);
 	if ($result->num_rows > 0) {
@@ -326,13 +326,19 @@ function viewHost($link,$host_id) {
 			<h4>Group Membership</h4>
 	  		<div class='btn-group'><a aria-expanded='false' href='#' class='btn btn-default dropdown-toggle' data-toggle='dropdown'>ADD TO GROUP<span class='caret'></span></a>
      		<ul class='dropdown-menu'>"; 
-			// Loop through the query results, outputing the options one by one	
+     		
+			// Loop through the group results
 			while($grouprow = $groupresult->fetch_assoc()) {
-				echo "<li><a href='#'>" . $grouprow['name'] . "</a></li>";
+				echo "<form action '' method='POST'>
+				<input type='hidden' name='group_id' value='" . $grouprow['groupid'] . "'/>
+		      <input type='hidden' name='host_id' value='" . $hostid . "'/>
+	       	<input type='hidden' name='host_name' value='" . $hostname . "'/>
+		      <input type='hidden' name='mac_addr' value='" . $hostmac . "'/>		
+				<button type='submit' class='btn btn-xs btn-default' name='groupadd'>" . $grouprow['groupid'] . "-" . $grouprow['name'] . "</button></form>";
 			}
 			echo "</ul></div>
-	 		<hr>
- 	 		<h4>Task Info</h4>";
+			
+	 		<hr><h4>Task Info</h4>";
  			if(($curtime-$tasktime) > 900) { 
 				echo "<span title='Client NOT ACTIVE within last 15 minutes'><img src='images/nonactive.png' width='16' /></span>";}	
 			else {
@@ -340,12 +346,10 @@ function viewHost($link,$host_id) {
 		 	echo "
  	 		<strong>Last Task Check: </strong>" . $row['last_check'] . "<br /><br />
  	 		<h4>Create New task</h4>";
- 	 		
- 	 		
 	}	
 	
 	
-			echo"
+		echo"
 	 	<form action='quick_task.php'>
 		<input type='hidden' name='host_id' value='" . $hostid . "'/>
 		<input type='hidden' name='host_name' value='" . $hostname . "'/>
@@ -360,11 +364,26 @@ function viewHost($link,$host_id) {
 		<strong>WARNING!</strong> Removing a host is permanent. Host will need to be registered again for management.";
 	}
 	
+	// query to add to group
+	if(isset($_POST['groupadd'])){
+	$groupid = $_POST['group_id'];
+	$hostmac = $_POST['mac_addr'];
+	$hostid = $_POST['host_id'];
+	$hostname = $_POST['host_name'];
+	if (!mysqli_query($link, "INSERT INTO group_members (group_mem_num, hostid, mac, hostname, groupid) VALUES ('', '$hostid', '$hostmac', '$hostname', '$groupid')"))
+		{
+			echo "<br><hr><h4><i class='fa fa-exclamation-triangle' aria-hidden='true'>Unable to add host to group. Host may already belong to group.</i></h4>";	}
+	else {			
+			mysqli_close($link);
+   		echo"<script>window.location.href = 'view_group.php?group_id=" . $groupid . "';</script>";}		
+		} 	
+
+   // query to remove host
 	if(isset($_POST['remove'])){
 	$hostmac = $_POST['hostmac'];
 	if (!mysqli_query($link, "DELETE FROM hosts WHERE mac = '$hostmac'"))
 		{
-			echo "There was an error removing the host!";	}
+			echo "<br><hr><h4><i class='fa fa-exclamation-triangle' aria-hidden='true'>Unable to remove host!</i></h4>";	}
 	else {			
 			mysqli_close($link);
    		echo"<script>window.location.href = 'host_list.php';</script>";}			
@@ -805,7 +824,7 @@ function viewGroup($link,$group_id) {
  // PAGINATION IN FOOTER
 	echo "<tfoot><tr><td colspan=8>";
 	if(isset($page))	{
-	$result = mysqli_query($link,"select Count(*) As Total from group_members");
+	$result = mysqli_query($link,"select Count(*) As Total from group_members WHERE groupid = " . $group_id);
 	$rows = mysqli_num_rows($result);
 		if($rows) {
 			$rs = mysqli_fetch_assoc($result);
@@ -815,23 +834,23 @@ function viewGroup($link,$group_id) {
 			echo ""; }
 		else {
 		$j = $page - 1;
-		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='view_group.php?page=$j'>< Prev</a></span>";}
+		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='view_group.php?group_id=$group_id&page=$j'>< Prev</a></span>";}
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='view_group.php?page=$i'> $i</a></span>";}
+				echo "<span><a id='page_a_link' href='view_group.php?group_id=$group_id&page=$i'> $i</a></span>";}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
 		if($page == $totalPages ){
 			echo "";}
 		else {
 			$j = $page + 1;
-			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='view_group.php?page=$j'> Next ></a></span>";}
+			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='view_group.php?group_id=$group_id&page=$j'> Next ></a></span>";}
 	}
 	echo "</td></tr></tfoot></tbody></table>";
 
 	} else {
-    echo "<h3>No Group Members Found</h3>";
+    echo "<h3>No Groups Members Found</h3>";
 	}	
 	
 	
