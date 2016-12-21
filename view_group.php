@@ -26,7 +26,7 @@ if ($login->isUserLoggedIn() == true) {
 <br />
 <br />
 
-          <div class="panel panel-primary">
+          <div class="panel">
             <div class="panel-heading">
               <h3 class="panel-title"><i class="fa fa-cubes" aria-hidden="true"></i> View Group</h3>
             </div>

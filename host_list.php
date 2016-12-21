@@ -32,7 +32,7 @@ if ($login->isUserLoggedIn() == true) {
 
 
 	<!-- Start User Panel -->
-          <div class="panel panel-primary">
+          <div class="panel">
             <div class="panel-heading">
               <h3 class="panel-title"><i class="fa fa-desktop" aria-hidden="true"></i> Hosts</h3>
             </div>

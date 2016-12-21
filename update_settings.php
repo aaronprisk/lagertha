@@ -1,5 +1,4 @@
 <?php
-
 // load the login class
 require_once("classes/Login.php");
 
@@ -20,34 +19,12 @@ if ($login->isUserLoggedIn() == true) {
     header("Location: login.php");
     include("views/not_logged_in.php");
 }
-?>			
+	
+	$check_freq = mysqli_real_escape_string($link, $_REQUEST['check_freq']);
+	updateSettings($link,$check_freq);
+	?>
 
 
-<html>
-<body>
-<br />
-<br />
-<br />
-<br />
-
-
-	<!-- Start User Panel -->
-          <div class="panel">
-            <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-desktop" aria-hidden="true"></i> Add New Host</h3>
-            </div>
-          <div class="panel-body">
-			<h4>Please fill out required fields.</h4>
-
-			<form action='create_host.php'>
-				<input class='form-control' name='hostname' placeholder='Hostname' type='text' required>
-				<br />
-				<input class='form-control' name='mac' placeholder='MAC (No Colons eg: 0A1BC34D5F6G)' type='text' required>
-				<br />	
-      		<button type='submit' class='btn btn-success'>+Add New Host</button>
-			</form>			
-			
-			
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -58,7 +35,3 @@ if ($login->isUserLoggedIn() == true) {
     <script src="../../assets/js/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-    
-    
-  </body>
-</html>

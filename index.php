@@ -50,7 +50,7 @@ if ($login->isUserLoggedIn() == true) {
 <br />
 <br />
 <div class="jumbotron text-center">
-<img src="images/lag-logo-black.png" alt="lagertha-logo" height="100px">
+<img src="images/lag-logo.png" alt="lagertha-logo" height="100px">
  <h3>Welcome to Lagertha!</h3>
  Lagertha is a tool for managing Linux systems! 
  <br />

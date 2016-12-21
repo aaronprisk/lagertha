@@ -20,11 +20,16 @@ function hostPull($link,$terms) {
 	$start = $calc - $perpage;
 	// Query the database for the results
 	$result = $link->query($query . $start . "," . $perpage);
-
+	
+	// Get host count numbers
+	$count_query = "SELECT * FROM hosts";	
+	$count_result = $link->query($count_query);
+   $count_total = $count_result->num_rows;
 
 	if ($result->num_rows > 0) {
 	
 		// Display User Container and table
+		echo "$count_total Total Hosts\n";
 		echo "
    	<div class='row'>
   		<div class='col-md-12'>
@@ -166,7 +171,7 @@ function taskPull($link,$host_id) {
     // PAGINATION IN FOOTER
 	echo "<tfoot><tr><td colspan=8>";
 	if(isset($page))	{
-	$result = mysqli_query($link,"select Count(*) As Total from tasks");
+	$result = mysqli_query($link,"select Count(*) As Total from tasks WHERE pending = 1");
 	$rows = mysqli_num_rows($result);
 		if($rows) {
 			$rs = mysqli_fetch_assoc($result);
@@ -177,11 +182,11 @@ function taskPull($link,$host_id) {
 			echo ""; }
 		else {
 		$j = $page - 1;
-		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'>< Prev</a></span>";}
+		echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='task_list.php?page=$j'>< Prev</a></span>";}
 		
 		for($i=1; $i <= $totalPages; $i++){
 			if($i<>$page){
-				echo "<span><a id='page_a_link' href='host_list.php?page=$i'> $i</a></span>";
+				echo "<span><a id='page_a_link' href='task_list.php?page=$i'> $i</a></span>";
 				}
 			else {
 				echo "<span id='page_links' style='font-weight: bold;'> $i</span>";}}
@@ -189,7 +194,7 @@ function taskPull($link,$host_id) {
 			echo "";}
 		else {
 			$j = $page + 1;
-			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='host_list.php?page=$j'> Next ></a></span>";}
+			echo "<span class='btn btn-xs btn-default'><a id='page_a_link' href='task_list.php?page=$j'> Next ></a></span>";}
 	}
 	echo "</td></tr></tfoot></tbody></table>";
 	} else {

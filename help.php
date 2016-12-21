@@ -28,7 +28,7 @@ if ($login->isUserLoggedIn() == true) {
 <br />
 <br />
      
-<div class="panel panel-primary">
+<div class="panel">
 	<div class="panel-heading">
   		<h3 class="panel-title"><i class="fa fa-image" aria-hidden="true"></i> Help & Support</h3>
    </div>

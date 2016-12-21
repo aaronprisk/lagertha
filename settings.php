@@ -30,7 +30,7 @@ if ($login->isUserLoggedIn() == true) {
 	
 echo "
 <html><body><br /><br /><br /><br />
-<div class='panel panel-primary'>
+<div class='panel'>
 	<div class='panel-heading'>
   		<h3 class='panel-title'><i class='fa fa-cog' aria-hidden='true'></i> Client Settings</h3>
    </div>

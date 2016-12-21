@@ -28,7 +28,7 @@ if ($login->isUserLoggedIn() == true) {
 <br />
 <br />
      
-<div class="panel panel-primary">
+<div class="panel">
 	<div class="panel-heading">
   		<h3 class="panel-title"><i class="fa fa-image" aria-hidden="true"></i> Uploaded Media</h3>
    </div>
@@ -45,7 +45,7 @@ if ($login->isUserLoggedIn() == true) {
 </div>
 
 
-<div class="panel panel-primary">
+<div class="panel">
 	<div class="panel-heading">
   		<h3 class="panel-title"><i class="fa fa-upload" aria-hidden="true"></i> Upload New Media</h3>
    </div>

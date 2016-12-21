@@ -15,7 +15,7 @@
     <div class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="../" class="navbar-brand"><img src="/images/lag-logo-black.png" width="100px"></a>
+          <a href="../" class="navbar-brand"><img src="/images/lag-logo.png" width="46px"></a>
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>

@@ -44,12 +44,9 @@ if ($login->isUserLoggedIn() == true) {
 
 	<div class="container" style="text-align: center;">  
 	    <div class='col-md-4 col-md-offset-4'>
-	    		<div class="panel panel-primary">
-           		 <div class="panel-heading">
-            <h3 class="panel-title">Login</h3>
-            	 </div>
+	    		<div class="panel">
         <div class="panel-body">
-	    	 <img src="images/lag-logo-black.png" height="100px" alt="">
+	    	 <img src="images/lag-logo.png" height="100px" alt="">
   		  	<form method="post" action="index.php" name="loginform"> 	
   		   	<h2 class="form-signin-heading">Please sign in</h2>	 
      				<label for="login_input_username" class="sr-only">Username</label>Username
