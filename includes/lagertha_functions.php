@@ -408,10 +408,10 @@ function viewHost($link,$host_id) {
 function logPull($link, $host_id) {
 
    if ($host_id == NULL){
-   	$query = "SELECT * FROM tasks WHERE pending = 0 ORDER BY taskid LIMIT "; 
+   	$query = "SELECT * FROM tasks WHERE pending = 0 ORDER BY taskid DESC LIMIT "; 
    	}
 	else {
-		$query = "SELECT * FROM tasks WHERE hostid = " . $host_id . "LIMIT "; 	
+		$query = "SELECT * FROM tasks WHERE hostid = " . $host_id . "DESC LIMIT "; 	
 		}	
 	$perpage = 10;
 	if(isset($_GET["page"])){
