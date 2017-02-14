@@ -13,6 +13,4 @@ mysqli_set_charset($con,"utf8");
 
 echo "Success: Connection to Lagertha was successful." . PHP_EOL;
 echo "Host information: " . mysqli_get_host_info($link) . PHP_EOL;
-
-mysqli_close($link);
 ?>
