@@ -13,5 +13,5 @@
  */
 define("DB_HOST", "localhost");
 define("DB_NAME", "login");
-define("DB_USER", "USER");
-define("DB_PASS", "PASSWORD");
+define("DB_USER", "auth");
+define("DB_PASS", "valhalla");
