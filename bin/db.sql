@@ -74,3 +74,6 @@ GRANT UPDATE (status, pending) ON `lagertha`.`tasks` TO 'lagertha'@'%';
 GRANT UPDATE (last_check) ON `lagertha`.`hosts` TO 'lagertha'@'%';
 GRANT SELECT ON *.* TO 'register'@'%' IDENTIFIED BY PASSWORD '*3602DE65DB1B637F8C523EE0C96A2E11E1DA3531';
 GRANT SELECT, INSERT ON `lagertha`.`hosts` TO 'register'@'%';
+
+GRANT USAGE ON *.* TO 'auth'@'%' IDENTIFIED BY PASSWORD '*13310B925D8134A4089813743064CA2DC75E0A79';
+GRANT ALL PRIVILEGES ON `login`.* TO 'auth'@'%';
