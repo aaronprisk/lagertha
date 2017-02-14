@@ -13,10 +13,12 @@ sudo apt -y install apache2 php libapache2-mod-php php-mysql wget mysql-server >
 echo "* Setting up MySQL Databases and Tables. You will be prompted for your MySQL root password."
 echo "* Creating DBs"
 mysql -u root -p < db.sql >> lag-install.log
-echo "* Creating Tables"
+echo "* Creating User Tables"
 mysql -u root -p < tables.sql >> lag-install.log
 echo "* Creating default user account"
 mysql -u root -p < users.sql >> lag-install.log
+echo "* Creating Lagertha Tables"
+mysql -u root -p < lagertha.sql >> lag-install.log
 
 echo "* Setting up webroot files"
 sudo cp ../* /var/www/html/ >> lag-install.log
