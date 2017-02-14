@@ -8,20 +8,14 @@
 touch lag-install.log
 echo "* Installing required packages"
 echo "* You may be prompted for MySQL passwords if not previously installed"
-sudo apt -y install apache2 php libapache2-mod-php php-mysql wget mysql-server >> lag-install.log
+sudo apt-get -y install apache2 php libapache2-mod-php php-mysql wget mysql-server
 
 echo "* Setting up MySQL Databases and Tables. You will be prompted for your MySQL root password."
-echo "* Creating DBs"
+echo "* Configuring Database"
 mysql -u root -p < db.sql >> lag-install.log
-echo "* Creating User Tables"
-mysql -u root -p < tables.sql >> lag-install.log
-echo "* Creating default user account"
-mysql -u root -p < users.sql >> lag-install.log
-echo "* Creating Lagertha Tables"
-mysql -u root -p < lagertha.sql >> lag-install.log
 
 echo "* Setting up webroot files"
-sudo cp ../* /var/www/html/ >> lag-install.log
+sudo cp -R ../* /var/www/html/ >> lag-install.log
 sudo rm -R /var/www/html/bin/
 sudo rm /var/www/html/README.md
 
