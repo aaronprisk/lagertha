@@ -594,7 +594,7 @@ if($group_id) {
 				if(isset($_POST['package'])){
 				$pkg = $_POST['pkg'];
 				$type = $_POST['type'];		
-				$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())";
+				$query = "INSERT INTO tasks (host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())";
 				echo $query;
 					if ($link->query($query) === TRUE) {
     						echo"<script>window.location.href = 'task_list.php';</script>";
@@ -606,7 +606,7 @@ if($group_id) {
 				// GROUP UPDATE TASK
 				if(isset($_POST['update'])){
 				$type = 0;
-				$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
+				$query = "INSERT INTO tasks (host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
 					if ($link->query($query) === TRUE) {
     						echo"<script>window.location.href = 'task_list.php';</script>";
 						} else {
@@ -618,7 +618,7 @@ if($group_id) {
 				if(isset($_POST['visual'])){
 				$selectwall = $_POST['wallpaper'];
 				$type = 3;
-				$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '$selectwall', '0', 'quick task', '$user_id', '', now())";
+				$query = "INSERT INTO tasks (host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('$mem_host_name', '$mem_mac_addr', '$mem_hostid', '$type', '1', '$selectwall', '0', 'quick task', '$user_id', '', now())";
 					if ($link->query($query) === TRUE) {
     						echo"<script>window.location.href = 'task_list.php';</script>";
 						} else {
@@ -672,7 +672,7 @@ elseif($host_id) {
 		if(isset($_POST['package'])){
 			$pkg = $_POST['pkg'];
 			$type = $_POST['type'];
-			$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('','$host_name', '$mac_addr', '$host_id', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())";
+			$query = "INSERT INTO tasks (host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('$host_name', '$mac_addr', '$host_id', '$type', '1', '$pkg', '0', 'quick task', '$user_id', '', now())";
 					if ($link->query($query) === TRUE) {
     						echo"<script>window.location.href = 'task_list.php';</script>";
 						} else {
@@ -682,7 +682,7 @@ elseif($host_id) {
 			// HOST UPDATE TASK
 			if(isset($_POST['update'])){
 			$type = 0;
-			$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$mac_addr', '$host_id', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
+			$query = "INSERT INTO tasks (host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('$host_name', '$mac_addr', '$host_id', '$type', '1', '', '0', 'quick task', '$user_id', '', now())";
 					if ($link->query($query) === TRUE) {
     						echo"<script>window.location.href = 'task_list.php';</script>";
 						} else {
@@ -694,7 +694,7 @@ elseif($host_id) {
 		if(isset($_POST['visual'])){
 			$selectwall = $_POST['wallpaper'];
 			$type = 3;
-			$query = "INSERT INTO tasks (taskid, host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('', '$host_name', '$mac_addr', '$host_id', '$type', '1', '$selectwall', '0', 'quick task', '$user_id', '', now())";
+			$query = "INSERT INTO tasks (host, mac, hostid, tasktype, pending, package, status, info, user, log, timestamp) VALUES ('$host_name', '$mac_addr', '$host_id', '$type', '1', '$selectwall', '0', 'quick task', '$user_id', '', now())";
 					if ($link->query($query) === TRUE) {
     						echo"<script>window.location.href = 'task_list.php';</script>";
 						} else {
@@ -752,7 +752,7 @@ function createHost($link,$hostname,$mac) {
 	$bytes = str_split($mac, 2);	
 	$newmac = implode(':', $bytes);
 	$taskid = $_POST['taskid'];
-	$query = "INSERT INTO hosts (hostid, mac, hostname, os, details, last_check) VALUES ('', '$newmac', '$hostname', '', '', '')";
+	$query = "INSERT INTO hosts (mac, hostname, os, details, last_check) VALUES ('$newmac', '$hostname', '', '', '')";
 	if (!mysqli_query($link,$query))
 		{
 			echo "<h1>There was an error creating host!</h1><br />";
