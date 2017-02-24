@@ -69,11 +69,11 @@ CREATE TABLE IF NOT EXISTS `login`.`users` (
 
 INSERT INTO users (user_name, user_password_hash, user_email) VALUES("lagertha", "$2y$10$t/ah4VLdqLHnPghrwhXO/.UVKme9jsg0nPrLY1Up6JOJgPorzF5Sy", "admin@localhost.local");
 
-GRANT SELECT, INSERT, UPDATE, DELETE, FILE ON *.* TO 'lagertha'@'%' IDENTIFIED BY PASSWORD '*3C050DC10B57B04B683CD56DEE05C480CFB6C044';
+GRANT SELECT, INSERT, UPDATE, DELETE, FILE ON *.* TO 'lagertha'@'%' IDENTIFIED BY PASSWORD '*sword';
 GRANT UPDATE (status, pending) ON `lagertha`.`tasks` TO 'lagertha'@'%';
 GRANT UPDATE (last_check) ON `lagertha`.`hosts` TO 'lagertha'@'%';
-GRANT SELECT ON *.* TO 'register'@'%' IDENTIFIED BY PASSWORD '*3602DE65DB1B637F8C523EE0C96A2E11E1DA3531';
+GRANT SELECT ON *.* TO 'register'@'%' IDENTIFIED BY PASSWORD 'addnewhost!';
 GRANT SELECT, INSERT ON `lagertha`.`hosts` TO 'register'@'%';
 
-GRANT USAGE ON *.* TO 'auth'@'%' IDENTIFIED BY PASSWORD '*13310B925D8134A4089813743064CA2DC75E0A79';
+GRANT USAGE ON *.* TO 'auth'@'%' IDENTIFIED BY PASSWORD 'valhalla';
 GRANT ALL PRIVILEGES ON `login`.* TO 'auth'@'%';
