@@ -765,6 +765,18 @@ function createHost($link,$hostname,$mac,$os,$details) {
 
 
 
+function createGroup($link,$groupname,$info,$owner) {
+        $query = "INSERT INTO groups (name, info, owner) VALUES ('$groupname', '$info', '$owner')";
+        if (!mysqli_query($link,$query))
+                {
+                        echo "<h1>There was an error creating group!</h1><br />" . $newmac;
+                        mysqli_close($link);    }
+        else {
+                        mysqli_close($link);
+                echo"<script>window.location.href = 'groups.php';</script>";}        
+
+}       // end of createGroup function
+
 
 
 
