@@ -43,7 +43,11 @@ if ($login->isUserLoggedIn() == true) {
 				<input class='form-control' name='hostname' placeholder='Hostname' type='text' required>
 				<br />
 				<input class='form-control' name='mac' placeholder='MAC (No Colons eg: 0A1BC34D5F6G)' type='text' required>
-				<br />	
+				<br />
+				<input class='form-control' name='os' placeholder='Debian' type='text' required>
+                                <br />
+                                <input class='form-control' name='details' placeholder='Secretary Computer' type='text' required>
+                                <br />
       		<button type='submit' class='btn btn-success'>+Add New Host</button>
 			</form>			
 			
