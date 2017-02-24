@@ -375,7 +375,7 @@ function viewHost($link,$host_id) {
 	$hostmac = $_POST['mac_addr'];
 	$hostid = $_POST['host_id'];
 	$hostname = $_POST['host_name'];
-	if (!mysqli_query($link, "INSERT INTO group_members (group_mem_num, hostid, mac, hostname, groupid) VALUES ('', '$hostid', '$hostmac', '$hostname', '$groupid')"))
+	if (!mysqli_query($link, "INSERT INTO group_members (hostid, mac, hostname, groupid) VALUES ('$hostid', '$hostmac', '$hostname', '$groupid')"))
 		{
 			echo "<br><hr><h4><i class='fa fa-exclamation-triangle' aria-hidden='true'>Unable to add host to group. Host may already belong to group.</i></h4>";	}
 	else {			
