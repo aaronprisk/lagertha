@@ -18,9 +18,13 @@ echo "* Setting up webroot files"
 sudo cp -R ../* /var/www/html/ >> lag-install.log
 sudo rm -R /var/www/html/bin/
 sudo rm /var/www/html/README.md
+sudo rm /var/www/html/index.html
 
 echo "* Setting permissions"
 sudo chown -R www-data:www-data /var/www/html/ >> lag-install.log
+
+echo "*Restarting Web Server"
+sudo service apache2 restart >> lag-install.log
 
 echo "--------------------------------------------------------"
 echo "Lagertha Server install process is complete!"
