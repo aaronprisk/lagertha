@@ -42,7 +42,7 @@ if ($login->isUserLoggedIn() == true) {
 <h3>Contribute</h3>
 <p>If you'd like contribute to Lagertha, please join us on our github!</p>
 <h3>License</h3>
-<p>Lagertha is licensed under the GNU GPL 2.0 license. A copy of the GNU GPL 2.0 license is packaged with this software. For more information of the GNU GPL license, please visit <a href="http://gnu.org">GNU.org</a></p>
+<p>Lagertha is licensed under the MIT license. A copy of the MIT license is packaged with this software.</p>
 </div>
 </div>
 
