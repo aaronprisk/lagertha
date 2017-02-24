@@ -22,8 +22,9 @@ if ($login->isUserLoggedIn() == true) {
 	
 	$hostname = mysqli_real_escape_string($link, $_REQUEST['hostname']);
 	$mac = mysqli_real_escape_string($link, $_REQUEST['mac']);
+	$os = mysqli_real_escape_string($link, $_REQUEST['os']);
 	$details = mysqli_real_escape_string($link, $_REQUEST['details']);
-	createHost($link,$hostname,$mac);
+	createHost($link,$hostname,$mac,$os,$details);
 	?>
 
 
