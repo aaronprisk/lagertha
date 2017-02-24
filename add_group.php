@@ -30,25 +30,23 @@ if ($login->isUserLoggedIn() == true) {
 <br />
 <br />
 
-
-	<!-- Start User Panel -->
+	        <!-- Start User Panel -->
           <div class="panel panel-primary">
             <div class="panel-heading">
               <h3 class="panel-title"><i class="fa fa-cubes" aria-hidden="true"></i> Create New Group</h3>
             </div>
           <div class="panel-body">
-			<h4>Please fill out required fields.</h4>
-
-			<?php
-			addHost();
-			?>
-
-			<form action='add_host.php'>
-      		<button type='submit' class='btn btn-success'>+Add New Host</button>
-			</form>			
-			
-			
-
+                        <h4>Please fill out required fields.</h4>
+                        <form action='create_group.php'>
+                                <input class='form-control' name='groupname' placeholder='Group Name' type='text' required>
+                                <br />
+                                <input class='form-control' name='info' placeholder='Group Info' type='text' required>
+                                <br />
+                                <input class='form-control' name='owner' placeholder='Group Owner' type='text' required>
+                                <br />
+                                <button type='submit' class='btn btn-success'>+Create New Group</button>
+                        </form>
+	
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
