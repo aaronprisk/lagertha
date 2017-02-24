@@ -44,9 +44,9 @@ if ($login->isUserLoggedIn() == true) {
 				<br />
 				<input class='form-control' name='mac' placeholder='MAC (No Colons eg: 0A1BC34D5F6G)' type='text' required>
 				<br />
-				<input class='form-control' name='os' placeholder='Debian' type='text' required>
+				<input class='form-control' name='os' placeholder='OS/Distro' type='text' required>
                                 <br />
-                                <input class='form-control' name='details' placeholder='Secretary Computer' type='text' required>
+                                <input class='form-control' name='details' placeholder='Details' type='text' required>
                                 <br />
       		<button type='submit' class='btn btn-success'>+Add New Host</button>
 			</form>			
