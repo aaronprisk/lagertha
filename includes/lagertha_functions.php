@@ -748,11 +748,11 @@ function viewTask($link,$task_id) {
 
 
 
-function createHost($link,$hostname,$mac) {
+function createHost($link,$hostname,$mac,$os,$details) {
 	$bytes = str_split($mac, 2);	
 	$newmac = implode(':', $bytes);
 	$taskid = $_POST['taskid'];
-	$query = "INSERT INTO hosts (mac, hostname, os, details, last_check) VALUES ('$newmac', '$hostname', '', '', '')";
+	$query = "INSERT INTO hosts (mac, hostname, os, details) VALUES ('$newmac', '$hostname', '$os', '$details')";
 	if (!mysqli_query($link,$query))
 		{
 			echo "<h1>There was an error creating host!</h1><br />";
