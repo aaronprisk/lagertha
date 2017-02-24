@@ -9,7 +9,7 @@ touch lag-install.log
 echo "* Installing required packages"
 echo "* You may be prompted for MySQL passwords if not previously installed"
 sudo apt-get -y install apache2 php libapache2-mod-php php-mysql wget mysql-server
-
+clear
 echo "* Setting up MySQL Databases and Tables. You will be prompted for your MySQL root password."
 echo "* Configuring Database"
 mysql -u root -p < db.sql >> lag-install.log
