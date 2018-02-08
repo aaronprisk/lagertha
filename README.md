@@ -48,6 +48,10 @@ $ sudo ./install-lagertha.sh
 ```
 Lagertha Server is now ready to go! Browse to your Lagertha server's IP in yuor favorite browser and log in using *lagertha/lagertha* as your username and password.
 
+## Next Step
+
+Now that you have a working Lagertha Server, it's time to add in some hosts. Head on over to https://github.com/aaronprisk/lagertha-client and follow the steps.
+
 ## Whats with the name?
 
 The name Lagertha is in honor of the badass shield maiden from Norse legends.
