@@ -29,9 +29,9 @@ Lagertha consists of two components:
 
 ## Installation
 
-These steps are for installing Lagertha on an Ubuntu Server 16.04 box. Lagertha will likely run on most modern distros that have a LAMP/FAMP stack.
+These steps are for installing Lagertha on an Ubuntu Server 16.04.03 box. Lagertha will likely run on most modern distros that have a LAMP/FAMP stack.
 ```
-$ sudo apt-get install apache2 mysql-server php5-mysql git
+$ sudo apt-get install apache2 mysql-server php-mysql git
 ```
 Run the MySQL Secure Installation and set your MySQL root Password
 ```
@@ -41,7 +41,7 @@ Create Lagertha directory and clone Lagertha Repo to local file
 ```
 $ git clone https://github.com/aaronprisk/lagertha.git
 ```
-Run Lagertha install script **COMING SOON
+Run Lagertha install script
 ```
 $ cd bin
 $ sudo ./install-lagertha.sh
@@ -51,7 +51,6 @@ Lagertha Server is now ready to go! Browse to your Lagertha server's IP in yuor 
 ## Whats with the name?
 
 The name Lagertha is in honor of the badass shield maiden from Norse legends.
-
 
 ## Some Considerations
 
