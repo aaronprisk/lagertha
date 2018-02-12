@@ -29,7 +29,7 @@ Lagertha consists of two components:
 
 ## Installation
 
-These steps are for installing Lagertha on an Ubuntu Server 16.04.03 box. Lagertha will likely run on most modern distros that have a LAMP/FAMP stack.
+These steps are for installing Lagertha on an Ubuntu Server 16.04.03 box. Lagertha will likely run on most modern distros that have a LAMP stack.
 ```
 $ sudo apt-get install apache2 mysql-server php-mysql git
 ```
@@ -46,7 +46,7 @@ Run Lagertha install script
 $ cd lagertha/bin
 $ sudo ./install.sh
 ```
-Lagertha Server is now ready to go! Browse to your Lagertha server's IP in yuor favorite browser and log in using *lagertha/lagertha* as your username and password.
+Lagertha Server is now ready to go! Browse to your Lagertha server's IP in your favorite browser and log in using *lagertha/lagertha* as your username and password.
 
 ## Next Step
 
