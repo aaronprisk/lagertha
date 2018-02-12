@@ -43,8 +43,8 @@ $ git clone https://github.com/aaronprisk/lagertha.git
 ```
 Run Lagertha install script
 ```
-$ cd bin
-$ sudo ./install-lagertha.sh
+$ cd lagertha/bin
+$ sudo ./install.sh
 ```
 Lagertha Server is now ready to go! Browse to your Lagertha server's IP in yuor favorite browser and log in using *lagertha/lagertha* as your username and password.
 
