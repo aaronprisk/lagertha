@@ -24,16 +24,16 @@ Lagertha consists of two components:
  * Client Registration and Hostnaming
  * Remotely Add/Remove Packages
  * Remotely Update Repos and Upgrade Packages
- * Remotely Change Wallpaper
+ * Push Wallpaper to Clients
 
 
 ## Installation
 
-These steps are for installing Lagertha on an Ubuntu Server 16.04.03 box. Lagertha will likely run on most modern distros that have a LAMP stack.
+These steps are for installing Lagertha on an Ubuntu Server 16.04 box. Lagertha will likely run on most modern distros that have a LAMP stack.
 ```
 $ sudo apt-get install apache2 mysql-server php-mysql git
 ```
-Run the MySQL Secure Installation and set your MySQL root Password
+(Optional) Run the MySQL Secure Installation setup
 ```
 $ sudo mysql_secure_installation
 ```
