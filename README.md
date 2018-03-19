@@ -1,5 +1,4 @@
 # Lagertha
-**PLEASE NOTE: This is still early in the works so it may not work as expected!**
 
 **Lagertha** is an easy-to-use tool for the basic management of Linux devices. 
 
