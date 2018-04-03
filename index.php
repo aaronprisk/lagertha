@@ -54,7 +54,7 @@ if ($login->isUserLoggedIn() == true) {
  <h3>Welcome to Lagertha!</h3>
  Lagertha is a tool for managing Linux systems! 
  <br />
- <br />The name <i>Lagertha</i> is in honor of the badass shield maiden from Norse legends.<br />
+ <br />The name <i>Lagertha</i> is in honor of the legendary shield maiden from Norse legends.<br />
  <br />
 
 
