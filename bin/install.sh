@@ -11,7 +11,7 @@ echo "* You may be prompted to create a MySQL password if not previously install
 sudo apt-get -y install apache2 php libapache2-mod-php php-mysql wget mysql-server
 
 echo "* Setting MySQL bind address."
-sudo sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf 
+sudo sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
 clear
 
 echo "* Setting up MySQL Databases and Tables. You will be prompted for your MySQL root password."
@@ -27,7 +27,9 @@ sudo rm /var/www/html/index.html
 echo "* Setting permissions"
 sudo chown -R www-data:www-data /var/www/html/ >> lag-install.log
 
-echo "*Restarting Web Server"
+echo "* Restarting Services"
+sudo service mysql stop >> lag-install.log
+sudo service mysql start >> lag-install.log
 sudo service apache2 restart >> lag-install.log
 
 echo "--------------------------------------------------------"
